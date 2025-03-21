@@ -8,7 +8,7 @@ namespace QuanLyNhanSu.DTO.PhieuLuongDto
     public class UpdatePhieuLuongDto
     {
         public DateTime NgayNhan { get; set; }
-        public decimal TongTien { get; set; }
+        public decimal? TongTien { get; set; }
         public int ChucVuID { get; set; }
         public int TinhTienLuongID { get; set; }
         public int NhanVienId { get; set; }

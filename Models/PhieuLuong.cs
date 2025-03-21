@@ -13,7 +13,7 @@ namespace QuanLyNhanSu.Models
         public int Id { get; set; }
         [Required]
         public DateTime NgayNhan { get; set; }
-        public decimal TongTien { get; set; }
+        public decimal? TongTien { get; set; }
         [Required]
         public int ChucVuID { get; set; }
         public int? TinhTienLuongID { get; set; }
