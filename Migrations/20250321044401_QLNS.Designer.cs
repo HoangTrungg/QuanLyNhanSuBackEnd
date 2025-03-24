@@ -12,8 +12,8 @@ using QuanLyNhanSu.Models;
 namespace QuanLyNhanSu.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250318060204_qlnsdb")]
-    partial class qlnsdb
+    [Migration("20250321044401_QLNS")]
+    partial class QLNS
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,26 @@ namespace QuanLyNhanSu.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "VGhpc0lzQWRtaW4NCg==",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "SFJNYW5hZ2Vy",
+                            Name = "HRManager",
+                            NormalizedName = "HRMANAGER"
+                        },
+                        new
+                        {
+                            Id = "Rk1hbmFnZXI=",
+                            Name = "FManager",
+                            NormalizedName = "FMANAGER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -137,6 +157,13 @@ namespace QuanLyNhanSu.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "QWRtaW5Vc2VyDQo=",
+                            RoleId = "VGhpc0lzQWRtaW4NCg=="
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -221,6 +248,24 @@ namespace QuanLyNhanSu.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "QWRtaW5Vc2VyDQo=",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "bed69cd2-40a1-4088-8c12-fe65ec7ca913",
+                            Email = "admin@example.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBp+37ixuhdXFpOOygA9TK+BhzhC76Jx26068vkgrvPuQ76xhOlCaRNHFkrOmZCERA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("QuanLyNhanSu.Models.ChucVu", b =>
@@ -365,6 +410,9 @@ namespace QuanLyNhanSu.Migrations
                     b.Property<int?>("TinhTienLuongID")
                         .HasColumnType("int");
 
+                    b.Property<decimal?>("TongTien")
+                        .HasColumnType("decimal(18,2)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ChucVuID");
@@ -400,6 +448,25 @@ namespace QuanLyNhanSu.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PhongBans");
+                });
+
+            modelBuilder.Entity("QuanLyNhanSu.Models.RefreshToken", b =>
+                {
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Token");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("QuanLyNhanSu.Models.TinhTienLuong", b =>
@@ -545,6 +612,15 @@ namespace QuanLyNhanSu.Migrations
                     b.Navigation("ChucVu");
 
                     b.Navigation("NhanVien");
+                });
+
+            modelBuilder.Entity("QuanLyNhanSu.Models.RefreshToken", b =>
+                {
+                    b.HasOne("QuanLyNhanSu.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("QuanLyNhanSu.Models.TinhTienLuong", b =>

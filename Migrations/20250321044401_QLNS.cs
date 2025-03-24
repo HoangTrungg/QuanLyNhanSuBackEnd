@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace QuanLyNhanSu.Migrations
 {
     /// <inheritdoc />
-    public partial class qlnsdb : Migration
+    public partial class QLNS : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -188,6 +190,25 @@ namespace QuanLyNhanSu.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Token = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Token);
+                    table.ForeignKey(
+                        name: "FK_RefreshTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NhanViens",
                 columns: table => new
                 {
@@ -257,6 +278,7 @@ namespace QuanLyNhanSu.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     NgayNhan = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TongTien = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     ChucVuID = table.Column<int>(type: "int", nullable: false),
                     TinhTienLuongID = table.Column<int>(type: "int", nullable: true),
                     NhanVienId = table.Column<int>(type: "int", nullable: false)
@@ -302,6 +324,26 @@ namespace QuanLyNhanSu.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "Rk1hbmFnZXI=", null, "FManager", "FMANAGER" },
+                    { "SFJNYW5hZ2Vy", null, "HRManager", "HRMANAGER" },
+                    { "VGhpc0lzQWRtaW4NCg==", null, "Admin", "ADMIN" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "QWRtaW5Vc2VyDQo=", 0, "bed69cd2-40a1-4088-8c12-fe65ec7ca913", "admin@example.com", true, false, null, "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEBp+37ixuhdXFpOOygA9TK+BhzhC76Jx26068vkgrvPuQ76xhOlCaRNHFkrOmZCERA==", null, false, "", false, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "VGhpc0lzQWRtaW4NCg==", "QWRtaW5Vc2VyDQo=" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -374,6 +416,11 @@ namespace QuanLyNhanSu.Migrations
                 column: "NhanVienId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_UserId",
+                table: "RefreshTokens",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TinhTienLuongs_PhieuLuongId",
                 table: "TinhTienLuongs",
                 column: "PhieuLuongId",
@@ -401,6 +448,9 @@ namespace QuanLyNhanSu.Migrations
 
             migrationBuilder.DropTable(
                 name: "HopDongs");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "TinhTienLuongs");

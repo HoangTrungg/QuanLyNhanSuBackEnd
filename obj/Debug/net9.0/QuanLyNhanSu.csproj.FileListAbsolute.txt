@@ -260,3 +260,4 @@ D:\asp.net\QuanLyNhanSu\bin\Debug\net9.0\Newtonsoft.Json.Bson.dll
 D:\asp.net\QuanLyNhanSu\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\asp.net\QuanLyNhanSu\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\asp.net\QuanLyNhanSu\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\asp.net\QuanLyNhanSu\obj\Debug\net9.0\QuanLyNhanSu.sourcelink.json

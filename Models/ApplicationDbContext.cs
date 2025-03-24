@@ -20,6 +20,7 @@ namespace QuanLyNhanSu.Models
         public DbSet<TinhTienLuong> TinhTienLuongs { get; set; }
         public DbSet<PhieuLuong> PhieuLuongs { get; set; }
         public DbSet<HopDong> HopDongs { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public ApplicationDbContext()
         {
         }
@@ -91,15 +92,38 @@ namespace QuanLyNhanSu.Models
                 .HasForeignKey<TinhTienLuong>(pl => pl.PhieuLuongId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Seed admin account
-            var adminRoleId = "admin-role-id";
-            var adminUserId = "admin-user-id";
+            modelBuilder.Entity<RefreshToken>().HasKey(rt => rt.Token);
+            modelBuilder.Entity<RefreshToken>()
+                .HasOne<ApplicationUser>()
+                .WithMany()
+                .HasForeignKey(rt => rt.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
+            // Seed admin account
+            var adminRoleId = "VGhpc0lzQWRtaW4NCg==";
+            var adminUserId = "QWRtaW5Vc2VyDQo=";
+            var HRMId = "SFJNYW5hZ2Vy";
+            var FMId = "Rk1hbmFnZXI=";
+            var UserId = "VXNlcg0K";
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
             {
                 Id = adminRoleId,
                 Name = "Admin",
                 NormalizedName = "ADMIN"
+            },
+            new IdentityRole
+            {
+                Id = HRMId,
+                Name = "HRManager",
+                NormalizedName = "HRMANAGER"
+            },
+            new IdentityRole
+            {
+                Id = FMId,
+                Name = "FManager",
+                NormalizedName = "FMANAGER"
             });
 
             var hasher = new PasswordHasher<ApplicationUser>();
@@ -118,7 +142,8 @@ namespace QuanLyNhanSu.Models
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
             {
                 RoleId = adminRoleId,
-                UserId = adminUserId
+                UserId = adminUserId,
+                
             });
         }
     }
